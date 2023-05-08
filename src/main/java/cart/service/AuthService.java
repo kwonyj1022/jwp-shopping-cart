@@ -1,6 +1,6 @@
 package cart.service;
 
-import cart.dto.cart.UserDto;
+import cart.dto.member.MemberDto;
 import cart.entity.MemberEntity;
 import cart.exception.AuthorizationException;
 import cart.repository.MemberRepository;
@@ -17,10 +17,10 @@ public class AuthService {
         this.memberRepository = memberRepository;
     }
 
-    public UserDto findMemberByEmail(String email) {
+    public MemberDto findMemberByEmail(String email) {
         Optional<MemberEntity> nullableEntity = memberRepository.findByEmail(email);
         if (nullableEntity.isPresent()) {
-            return UserDto.fromMemberEntity(nullableEntity.get());
+            return MemberDto.fromEntity(nullableEntity.get());
         }
 
         throw new AuthorizationException("회원을 찾을 수 없습니다.");

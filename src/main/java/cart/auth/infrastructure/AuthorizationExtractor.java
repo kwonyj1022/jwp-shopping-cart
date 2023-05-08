@@ -1,11 +1,8 @@
 package cart.auth.infrastructure;
 
-import cart.domain.cart.AuthInfo;
-import org.springframework.web.context.request.NativeWebRequest;
+import cart.domain.member.Member;
 
 public interface AuthorizationExtractor {
 
-    String AUTHORIZATION = "Authorization";
-
-    AuthInfo extract(NativeWebRequest webRequest);
+    Member extract(String authorization);
 }

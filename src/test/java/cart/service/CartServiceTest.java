@@ -1,7 +1,7 @@
 package cart.service;
 
 import cart.dto.cart.CartItemDto;
-import cart.dto.cart.UserDto;
+import cart.dto.member.MemberDto;
 import cart.entity.CartEntity;
 import cart.entity.MemberEntity;
 import cart.entity.ProductEntity;
@@ -39,7 +39,7 @@ class CartServiceTest {
         long cartId = 1L;
         long userId = 1L;
         long productId = 1L;
-        UserDto userDto = UserDto.fromMemberEntity(new MemberEntity(userId, "a@a.com", "1234"));
+        MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(userId, "a@a.com", "1234"));
         CartEntity savedCartEntity = new CartEntity(cartId, userId, productId);
         ProductEntity productEntity = new ProductEntity(productId, "product1", "url1.com", 1000);
 
@@ -47,7 +47,7 @@ class CartServiceTest {
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(productEntity));
 
         CartItemDto expectDto = CartItemDto.fromCartIdAndProductEntity(cartId, productEntity);
-        assertThat(cartService.addItem(userDto, productId)).isEqualTo(expectDto);
+        assertThat(cartService.addItem(memberDto, productId)).isEqualTo(expectDto);
     }
 
     @Test
@@ -55,10 +55,10 @@ class CartServiceTest {
     void addItemTest_fail() {
         long userId = 1L;
         long productId = 1L;
-        UserDto userDto = UserDto.fromMemberEntity(new MemberEntity(userId, "a@a.com", "1234"));
+        MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(userId, "a@a.com", "1234"));
         when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> cartService.addItem(userDto, productId))
+        assertThatThrownBy(() -> cartService.addItem(memberDto, productId))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("상품이 존재하지 않습니다.");
     }
@@ -69,7 +69,7 @@ class CartServiceTest {
         long userId = 1L;
         long productId1 = 1L;
         long productId2 = 2L;
-        UserDto userDto = UserDto.fromMemberEntity(new MemberEntity(userId, "a@a.com", "1234"));
+        MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(userId, "a@a.com", "1234"));
         CartEntity cartEntity1 = new CartEntity(1L, userId, productId1);
         CartEntity cartEntity2 = new CartEntity(2L, userId, productId2);
         when(cartRepository.findByUserId(anyLong()))
@@ -85,7 +85,7 @@ class CartServiceTest {
         CartItemDto cartItemDto1 = CartItemDto.fromCartIdAndProductEntity(cartEntity1.getId(), productEntity1);
         CartItemDto cartItemDto2 = CartItemDto.fromCartIdAndProductEntity(cartEntity2.getId(), productEntity2);
 
-        assertThat(cartService.findAllUserItems(userDto))
+        assertThat(cartService.findAllUserItems(memberDto))
                 .isEqualTo(List.of(cartItemDto1, cartItemDto2));
     }
 

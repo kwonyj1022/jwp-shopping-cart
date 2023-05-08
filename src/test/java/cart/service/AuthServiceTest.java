@@ -1,6 +1,6 @@
 package cart.service;
 
-import cart.dto.cart.UserDto;
+import cart.dto.member.MemberDto;
 import cart.entity.MemberEntity;
 import cart.exception.AuthorizationException;
 import cart.repository.MemberRepository;
@@ -34,7 +34,7 @@ class AuthServiceTest {
         when(memberRepository.findByEmail(anyString()))
                 .thenReturn(Optional.of(memberEntity));
 
-        UserDto expectDto = UserDto.fromMemberEntity(memberEntity);
+        MemberDto expectDto = MemberDto.fromEntity(memberEntity);
         assertThat(authService.findMemberByEmail(email)).isEqualTo(expectDto);
     }
 

@@ -1,7 +1,7 @@
 package cart.controller;
 
 import cart.dto.cart.CartItemDto;
-import cart.dto.cart.UserDto;
+import cart.dto.member.MemberDto;
 import cart.entity.MemberEntity;
 import cart.entity.ProductEntity;
 import cart.service.AuthService;
@@ -42,8 +42,8 @@ class CartControllerTest {
         List<CartItemDto> expectDtos = List.of(expectDto1);
 
         when(authService.findMemberByEmail(anyString()))
-                .thenReturn(UserDto.fromMemberEntity(new MemberEntity(1L, "a@a.com", "1234")));
-        when(cartService.findAllUserItems(any(UserDto.class)))
+                .thenReturn(MemberDto.fromEntity(new MemberEntity(1L, "a@a.com", "1234")));
+        when(cartService.findAllUserItems(any(MemberDto.class)))
                 .thenReturn(expectDtos);
 
         mockMvc.perform(get("/cart/items")
@@ -62,12 +62,12 @@ class CartControllerTest {
         Long memberId = 1L;
         Long cartId = 1L;
         Long productId = 1L;
-        UserDto expectUserDto = UserDto.fromMemberEntity(new MemberEntity(memberId, "a@a.com", "password1"));
+        MemberDto expectMemberDto = MemberDto.fromEntity(new MemberEntity(memberId, "a@a.com", "password1"));
         CartItemDto expectCartItemDto = CartItemDto.fromCartIdAndProductEntity(cartId, new ProductEntity(productId, "name1", "url1.com", 1000));
 
         when(authService.findMemberByEmail(anyString()))
-                .thenReturn(expectUserDto);
-        when(cartService.addItem(any(UserDto.class), anyLong()))
+                .thenReturn(expectMemberDto);
+        when(cartService.addItem(any(MemberDto.class), anyLong()))
                 .thenReturn(expectCartItemDto);
 
         mockMvc.perform(post("/cart/items/" + productId)

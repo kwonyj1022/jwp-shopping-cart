@@ -1,23 +1,20 @@
 package cart.auth.infrastructure;
 
-import cart.domain.cart.AuthInfo;
+import cart.domain.member.Member;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.web.context.request.NativeWebRequest;
 
 public class BasicAuthorizationExtractor implements AuthorizationExtractor {
     private static final String BASIC_TYPE = "Basic";
     private static final String DELIMITER = ":";
 
     @Override
-    public AuthInfo extract(NativeWebRequest webRequest) {
-        String header = webRequest.getHeader(AUTHORIZATION);
-
-        if (header == null) {
+    public Member extract(String authHeader) {
+        if (authHeader == null) {
             return null;
         }
 
-        if ((header.toLowerCase().startsWith(BASIC_TYPE.toLowerCase()))) {
-            String authHeaderValue = header.substring(BASIC_TYPE.length()).trim();
+        if ((authHeader.toLowerCase().startsWith(BASIC_TYPE.toLowerCase()))) {
+            String authHeaderValue = authHeader.substring(BASIC_TYPE.length()).trim();
             byte[] decodedBytes = Base64.decodeBase64(authHeaderValue);
             String decodedString = new String(decodedBytes);
 
@@ -25,7 +22,7 @@ public class BasicAuthorizationExtractor implements AuthorizationExtractor {
             String email = credentials[0];
             String password = credentials[1];
 
-            return new AuthInfo(email, password);
+            return new Member(email, password);
         }
 
         return null;

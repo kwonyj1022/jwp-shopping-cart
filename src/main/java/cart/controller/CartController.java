@@ -1,10 +1,10 @@
 package cart.controller;
 
-import cart.auth.Auth;
-import cart.domain.cart.AuthInfo;
+import cart.auth.AuthorizationPrincipal;
+import cart.domain.member.Member;
 import cart.dto.cart.CartItemDto;
 import cart.dto.cart.CartItemResponseDto;
-import cart.dto.cart.UserDto;
+import cart.dto.member.MemberDto;
 import cart.service.AuthService;
 import cart.service.CartService;
 import org.springframework.http.HttpStatus;
@@ -29,9 +29,9 @@ public class CartController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CartItemResponseDto>> items(@Auth AuthInfo authInfo) {
-        UserDto userDto = authService.findMemberByEmail(authInfo.getEmail());
-        List<CartItemDto> cartItemDtos = cartService.findAllUserItems(userDto);
+    public ResponseEntity<List<CartItemResponseDto>> items(@AuthorizationPrincipal Member member) {
+        MemberDto memberDto = authService.findMemberByEmail(member.getEmail());
+        List<CartItemDto> cartItemDtos = cartService.findAllUserItems(memberDto);
         List<CartItemResponseDto> response = cartItemDtos.stream()
                 .map(CartItemResponseDto::fromDto)
                 .collect(toList());
@@ -40,9 +40,9 @@ public class CartController {
 
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<CartItemResponseDto> addItem(@PathVariable("id") Long productId, @Auth AuthInfo authInfo) {
-        UserDto userDto = authService.findMemberByEmail(authInfo.getEmail());
-        CartItemDto dto = cartService.addItem(userDto, productId);
+    public ResponseEntity<CartItemResponseDto> addItem(@PathVariable("id") Long productId, @AuthorizationPrincipal Member member) {
+        MemberDto memberDto = authService.findMemberByEmail(member.getEmail());
+        CartItemDto dto = cartService.addItem(memberDto, productId);
         CartItemResponseDto response = CartItemResponseDto.fromDto(dto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .location(URI.create("/cart/items/" + response.getProductId()))

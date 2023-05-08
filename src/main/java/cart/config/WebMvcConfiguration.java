@@ -1,7 +1,8 @@
 package cart.config;
 
-import cart.auth.AuthArgumentResolver;
 import cart.auth.AuthInterceptor;
+import cart.auth.AuthenticationPrincipalArgumentResolver;
+import cart.auth.infrastructure.BasicAuthorizationExtractor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -14,12 +15,12 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor())
+        registry.addInterceptor(new AuthInterceptor(new BasicAuthorizationExtractor()))
                 .addPathPatterns("/cart/items/**");
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new AuthArgumentResolver());
+        resolvers.add(new AuthenticationPrincipalArgumentResolver());
     }
 }
