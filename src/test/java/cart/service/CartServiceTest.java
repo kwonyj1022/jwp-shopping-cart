@@ -37,10 +37,10 @@ class CartServiceTest {
     @DisplayName("장바구니에 상품을 추가한다.")
     void addItemTest_success() {
         long cartId = 1L;
-        long userId = 1L;
+        long memberId = 1L;
         long productId = 1L;
-        MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(userId, "a@a.com", "1234"));
-        CartItemEntity savedCartItemEntity = new CartItemEntity(cartId, userId, productId);
+        MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(memberId, "a@a.com", "1234"));
+        CartItemEntity savedCartItemEntity = new CartItemEntity(cartId, memberId, productId);
         ProductEntity productEntity = new ProductEntity(productId, "product1", "url1.com", 1000);
 
         when(cartRepository.save(any(CartItemEntity.class))).thenReturn(savedCartItemEntity);
@@ -53,9 +53,9 @@ class CartServiceTest {
     @Test
     @DisplayName("상품 정보를 찾지 못하면 예외가 발생한다.")
     void addItemTest_fail() {
-        long userId = 1L;
+        long memberId = 1L;
         long productId = 1L;
-        MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(userId, "a@a.com", "1234"));
+        MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(memberId, "a@a.com", "1234"));
         when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> cartService.addItem(memberDto, productId))
@@ -65,14 +65,14 @@ class CartServiceTest {
 
     @Test
     @DisplayName("사용자의 카트 정보를 조회한다.")
-    void findAllUserItemsTest() {
-        long userId = 1L;
+    void findAllMemberItemsTest() {
+        long memberId = 1L;
         long productId1 = 1L;
         long productId2 = 2L;
-        MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(userId, "a@a.com", "1234"));
-        CartItemEntity cartItemEntity1 = new CartItemEntity(1L, userId, productId1);
-        CartItemEntity cartItemEntity2 = new CartItemEntity(2L, userId, productId2);
-        when(cartRepository.findByUserId(anyLong()))
+        MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(memberId, "a@a.com", "1234"));
+        CartItemEntity cartItemEntity1 = new CartItemEntity(1L, memberId, productId1);
+        CartItemEntity cartItemEntity2 = new CartItemEntity(2L, memberId, productId2);
+        when(cartRepository.findByMemberId(anyLong()))
                 .thenReturn(List.of(cartItemEntity1, cartItemEntity2));
 
         ProductEntity productEntity1 = new ProductEntity(productId1, "product1", "url1.com", 10);
@@ -85,7 +85,7 @@ class CartServiceTest {
         CartItemDto cartItemDto1 = CartItemDto.fromCartIdAndProductEntity(cartItemEntity1.getId(), productEntity1);
         CartItemDto cartItemDto2 = CartItemDto.fromCartIdAndProductEntity(cartItemEntity2.getId(), productEntity2);
 
-        assertThat(cartService.findAllUserItems(memberDto))
+        assertThat(cartService.findAllMemberItems(memberDto))
                 .isEqualTo(List.of(cartItemDto1, cartItemDto2));
     }
 

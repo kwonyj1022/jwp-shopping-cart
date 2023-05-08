@@ -36,8 +36,8 @@ public class CartService {
         return CartItemDto.fromCartIdAndProductEntity(savedEntity.getId(), productEntity);
     }
 
-    public List<CartItemDto> findAllUserItems(MemberDto memberDto) {
-        List<CartItemEntity> entities = cartRepository.findByUserId(memberDto.getId());
+    public List<CartItemDto> findAllMemberItems(MemberDto memberDto) {
+        List<CartItemEntity> entities = cartRepository.findByMemberId(memberDto.getId());
         return entities.stream()
                 .map((cartEntity -> CartItemDto.fromCartIdAndProductEntity(cartEntity.getId(),
                         productRepository.findById(cartEntity.getProductId()).get())))

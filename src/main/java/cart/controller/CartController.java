@@ -31,7 +31,7 @@ public class CartController {
     @GetMapping
     public ResponseEntity<List<CartItemResponseDto>> items(@AuthorizationPrincipal Member member) {
         MemberDto memberDto = authService.findMemberByEmail(member.getEmail());
-        List<CartItemDto> cartItemDtos = cartService.findAllUserItems(memberDto);
+        List<CartItemDto> cartItemDtos = cartService.findAllMemberItems(memberDto);
         List<CartItemResponseDto> response = cartItemDtos.stream()
                 .map(CartItemResponseDto::fromDto)
                 .collect(toList());

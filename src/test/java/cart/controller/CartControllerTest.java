@@ -43,7 +43,7 @@ class CartControllerTest {
 
         when(authService.findMemberByEmail(anyString()))
                 .thenReturn(MemberDto.fromEntity(new MemberEntity(1L, "a@a.com", "1234")));
-        when(cartService.findAllUserItems(any(MemberDto.class)))
+        when(cartService.findAllMemberItems(any(MemberDto.class)))
                 .thenReturn(expectDtos);
 
         mockMvc.perform(get("/cart/items")

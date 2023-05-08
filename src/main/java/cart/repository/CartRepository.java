@@ -8,7 +8,7 @@ public interface CartRepository {
 
     CartItemEntity save(CartItemEntity cartItemEntity);
 
-    List<CartItemEntity> findByUserId(Long userId);
+    List<CartItemEntity> findByMemberId(Long memberId);
 
     void deleteById(Long id);
 }

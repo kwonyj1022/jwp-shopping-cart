@@ -40,10 +40,10 @@ public class DBCartRepository implements CartRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CartItemEntity> findByUserId(Long userId) {
+    public List<CartItemEntity> findByMemberId(Long memberId) {
         String sql = "SELECT id, member_id, product_id " +
                 "FROM cart WHERE member_id = ?";
-        return jdbcTemplate.query(sql, cartEntityMaker(), userId);
+        return jdbcTemplate.query(sql, cartEntityMaker(), memberId);
     }
 
     private static RowMapper<CartItemEntity> cartEntityMaker() {
