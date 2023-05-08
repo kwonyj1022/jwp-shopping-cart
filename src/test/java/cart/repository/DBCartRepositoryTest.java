@@ -19,7 +19,7 @@ class DBCartRepositoryTest {
 
     private final long userId = 1L;
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
     private CartRepository cartRepository;
     private CartItemEntity entity1;
     private CartItemEntity entity2;

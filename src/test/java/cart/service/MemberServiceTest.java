@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 class MemberServiceTest {
 
     @InjectMocks
-    MemberService memberService;
+    private MemberService memberService;
 
     @Mock
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("회원을 추가한다.")

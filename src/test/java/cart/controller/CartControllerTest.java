@@ -26,11 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CartControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @MockBean
-    AuthService authService;
+    private AuthService authService;
     @MockBean
-    CartService cartService;
+    private CartService cartService;
 
     @Test
     @DisplayName("사용자의 장바구니 상품 목록을 가져온다.")

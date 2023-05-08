@@ -22,9 +22,9 @@ import static org.mockito.Mockito.when;
 class AuthServiceTest {
 
     @InjectMocks
-    AuthService authService;
+    private AuthService authService;
     @Mock
-    MemberRepository memberRepository;
+    private MemberRepository memberRepository;
 
     @Test
     @DisplayName("email에 해당하는 회원을 찾는다")

@@ -27,11 +27,11 @@ import static org.mockito.Mockito.when;
 class CartServiceTest {
 
     @InjectMocks
-    CartService cartService;
+    private CartService cartService;
     @Mock
-    CartRepository cartRepository;
+    private CartRepository cartRepository;
     @Mock
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Test
     @DisplayName("장바구니에 상품을 추가한다.")

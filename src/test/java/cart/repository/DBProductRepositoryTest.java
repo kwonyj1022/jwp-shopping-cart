@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DBProductRepositoryTest {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
     private ProductRepository productRepository;
     private ProductEntity entity1;
     private ProductEntity entity2;

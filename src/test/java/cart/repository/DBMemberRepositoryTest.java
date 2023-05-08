@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class DBMemberRepositoryTest {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
     private MemberRepository memberRepository;
     private MemberEntity entity1;
     private MemberEntity entity2;

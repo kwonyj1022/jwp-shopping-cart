@@ -26,13 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class JwpCartControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
-    ProductService productService;
+    private ProductService productService;
 
     @MockBean
-    MemberService memberService;
+    private MemberService memberService;
 
     @Test
     @DisplayName("상품 목록 페이지를 조회한다.")

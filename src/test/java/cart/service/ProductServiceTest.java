@@ -23,10 +23,10 @@ import static org.mockito.Mockito.when;
 class ProductServiceTest {
 
     @InjectMocks
-    ProductService productService;
+    private ProductService productService;
 
     @Mock
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Test
     @DisplayName("모든 상품을 조회한다.")
