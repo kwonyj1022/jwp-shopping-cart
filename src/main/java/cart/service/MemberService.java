@@ -6,7 +6,6 @@ import cart.dto.member.MemberRequestDto;
 import cart.entity.MemberEntity;
 import cart.repository.MemberRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +21,6 @@ public class MemberService {
         this.repository = repository;
     }
 
-    @Transactional
     public MemberDto join(MemberRequestDto requestDto) {
         Member member = new Member(requestDto.getEmail(), requestDto.getPassword());
         MemberEntity entity = new MemberEntity(null, member.getEmail(), member.getPassword());
@@ -30,7 +28,6 @@ public class MemberService {
         return MemberDto.fromEntity(savedEntity);
     }
 
-    @Transactional(readOnly = true)
     public MemberDto findById(Long id) {
         Optional<MemberEntity> nullableEntity = repository.findById(id);
         if (nullableEntity.isEmpty()) {
@@ -40,7 +37,6 @@ public class MemberService {
         return MemberDto.fromEntity(foundEntity);
     }
 
-    @Transactional(readOnly = true)
     public MemberDto findByEmail(String email) {
         Optional<MemberEntity> nullableEntity = repository.findByEmail(email);
         if (nullableEntity.isEmpty()) {
@@ -50,7 +46,6 @@ public class MemberService {
         return MemberDto.fromEntity(foundEntity);
     }
 
-    @Transactional(readOnly = true)
     public List<MemberDto> findAll() {
         List<MemberEntity> entities = repository.findAll();
         return entities.stream()
@@ -58,7 +53,6 @@ public class MemberService {
                 .collect(toList());
     }
 
-    @Transactional
     public MemberDto updateById(MemberRequestDto requestDto, Long id) {
         Member member = new Member(requestDto.getEmail(), requestDto.getPassword());
         MemberEntity entity = new MemberEntity(id, member.getEmail(), member.getPassword());
@@ -66,7 +60,6 @@ public class MemberService {
         return MemberDto.fromEntity(entity);
     }
 
-    @Transactional
     public void deleteById(Long id) {
         repository.deleteById(id);
     }

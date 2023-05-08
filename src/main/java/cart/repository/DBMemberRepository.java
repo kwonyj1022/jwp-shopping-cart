@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -37,6 +38,7 @@ public class DBMemberRepository implements MemberRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<MemberEntity> findById(Long id) {
         String sql = "SELECT id, email, password FROM member WHERE id = ?";
         List<MemberEntity> entities = jdbcTemplate.query(sql, memberEntityMaker(), id);
@@ -44,6 +46,7 @@ public class DBMemberRepository implements MemberRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<MemberEntity> findByEmail(String email) throws DuplicateEmailException {
         String sql = "SELECT id, email, password FROM member WHERE email = ?";
         List<MemberEntity> entities = jdbcTemplate.query(sql, memberEntityMaker(), email);
@@ -51,6 +54,7 @@ public class DBMemberRepository implements MemberRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<MemberEntity> findAll() {
         String sql = "SELECT id, email, password FROM member";
         return jdbcTemplate.query(sql, memberEntityMaker());

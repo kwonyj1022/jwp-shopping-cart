@@ -6,11 +6,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
+@Transactional
 public class DBCartRepository implements CartRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -37,6 +39,7 @@ public class DBCartRepository implements CartRepository {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CartItemEntity> findByUserId(Long userId) {
         String sql = "SELECT id, member_id, product_id " +
                 "FROM cart WHERE member_id = ?";

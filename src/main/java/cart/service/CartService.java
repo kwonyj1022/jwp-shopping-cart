@@ -7,7 +7,6 @@ import cart.entity.ProductEntity;
 import cart.repository.CartRepository;
 import cart.repository.ProductRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +24,6 @@ public class CartService {
         this.productRepository = productRepository;
     }
 
-    @Transactional
     public CartItemDto addItem(MemberDto memberDto, Long productId) {
         CartItemEntity entity = new CartItemEntity(null, memberDto.getId(), productId);
         Optional<ProductEntity> nullableProductEntity = productRepository.findById(entity.getProductId());
@@ -38,7 +36,6 @@ public class CartService {
         return CartItemDto.fromCartIdAndProductEntity(savedEntity.getId(), productEntity);
     }
 
-    @Transactional(readOnly = true)
     public List<CartItemDto> findAllUserItems(MemberDto memberDto) {
         List<CartItemEntity> entities = cartRepository.findByUserId(memberDto.getId());
         return entities.stream()
@@ -47,7 +44,6 @@ public class CartService {
                 .collect(toList());
     }
 
-    @Transactional
     public void deleteById(Long id) {
         cartRepository.deleteById(id);
     }

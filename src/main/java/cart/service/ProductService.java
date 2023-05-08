@@ -6,7 +6,6 @@ import cart.dto.product.ProductRequestDto;
 import cart.entity.ProductEntity;
 import cart.repository.ProductRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,7 +20,6 @@ public class ProductService {
         this.repository = repository;
     }
 
-    @Transactional(readOnly = true)
     public List<ProductDto> findAll() {
         List<ProductEntity> entities = repository.findAll();
         return entities.stream()
@@ -29,7 +27,6 @@ public class ProductService {
                 .collect(toList());
     }
 
-    @Transactional
     public ProductDto add(ProductRequestDto requestDto) {
         Product product = new Product(requestDto.getName(), requestDto.getImgUrl(), requestDto.getPrice());
         ProductEntity entity = new ProductEntity(null, product.getName(), product.getImgUrl(), product.getPrice());
@@ -37,7 +34,6 @@ public class ProductService {
         return ProductDto.fromEntity(savedEntity);
     }
 
-    @Transactional
     public ProductDto updateById(ProductRequestDto requestDto, Long id) {
         Product product = new Product(requestDto.getName(), requestDto.getImgUrl(), requestDto.getPrice());
         ProductEntity entity = new ProductEntity(id, product.getName(), product.getImgUrl(), product.getPrice());
@@ -45,7 +41,6 @@ public class ProductService {
         return ProductDto.fromEntity(entity);
     }
 
-    @Transactional
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
