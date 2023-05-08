@@ -2,7 +2,7 @@ package cart.service;
 
 import cart.dto.cart.CartItemDto;
 import cart.dto.member.MemberDto;
-import cart.entity.CartEntity;
+import cart.entity.CartItemEntity;
 import cart.entity.ProductEntity;
 import cart.repository.CartRepository;
 import cart.repository.ProductRepository;
@@ -27,12 +27,12 @@ public class CartService {
 
     @Transactional
     public CartItemDto addItem(MemberDto memberDto, Long productId) {
-        CartEntity entity = new CartEntity(null, memberDto.getId(), productId);
+        CartItemEntity entity = new CartItemEntity(null, memberDto.getId(), productId);
         Optional<ProductEntity> nullableProductEntity = productRepository.findById(entity.getProductId());
         if (nullableProductEntity.isEmpty()) {
             throw new IllegalArgumentException("상품이 존재하지 않습니다.");
         }
-        CartEntity savedEntity = cartRepository.save(entity);
+        CartItemEntity savedEntity = cartRepository.save(entity);
         ProductEntity productEntity = nullableProductEntity.get();
 
         return CartItemDto.fromCartIdAndProductEntity(savedEntity.getId(), productEntity);
@@ -40,7 +40,7 @@ public class CartService {
 
     @Transactional(readOnly = true)
     public List<CartItemDto> findAllUserItems(MemberDto memberDto) {
-        List<CartEntity> entities = cartRepository.findByUserId(memberDto.getId());
+        List<CartItemEntity> entities = cartRepository.findByUserId(memberDto.getId());
         return entities.stream()
                 .map((cartEntity -> CartItemDto.fromCartIdAndProductEntity(cartEntity.getId(),
                         productRepository.findById(cartEntity.getProductId()).get())))

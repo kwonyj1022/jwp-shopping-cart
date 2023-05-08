@@ -1,14 +1,14 @@
 package cart.repository;
 
-import cart.entity.CartEntity;
+import cart.entity.CartItemEntity;
 
 import java.util.List;
 
 public interface CartRepository {
 
-    CartEntity save(CartEntity cartEntity);
+    CartItemEntity save(CartItemEntity cartItemEntity);
 
-    List<CartEntity> findByUserId(Long userId);
+    List<CartItemEntity> findByUserId(Long userId);
 
     void deleteById(Long id);
 }

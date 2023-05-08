@@ -2,13 +2,13 @@ package cart.entity;
 
 import java.util.Objects;
 
-public class CartEntity {
+public class CartItemEntity {
 
     private final Long id;
     private final Long memberId;
     private final Long productId;
 
-    public CartEntity(Long id, Long memberId, Long productId) {
+    public CartItemEntity(Long id, Long memberId, Long productId) {
         this.id = id;
         this.memberId = memberId;
         this.productId = productId;
@@ -39,7 +39,7 @@ public class CartEntity {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CartEntity that = (CartEntity) o;
+        CartItemEntity that = (CartItemEntity) o;
         return Objects.equals(id, that.id);
     }
 

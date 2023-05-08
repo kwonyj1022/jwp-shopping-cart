@@ -2,7 +2,7 @@ package cart.service;
 
 import cart.dto.cart.CartItemDto;
 import cart.dto.member.MemberDto;
-import cart.entity.CartEntity;
+import cart.entity.CartItemEntity;
 import cart.entity.MemberEntity;
 import cart.entity.ProductEntity;
 import cart.repository.CartRepository;
@@ -40,10 +40,10 @@ class CartServiceTest {
         long userId = 1L;
         long productId = 1L;
         MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(userId, "a@a.com", "1234"));
-        CartEntity savedCartEntity = new CartEntity(cartId, userId, productId);
+        CartItemEntity savedCartItemEntity = new CartItemEntity(cartId, userId, productId);
         ProductEntity productEntity = new ProductEntity(productId, "product1", "url1.com", 1000);
 
-        when(cartRepository.save(any(CartEntity.class))).thenReturn(savedCartEntity);
+        when(cartRepository.save(any(CartItemEntity.class))).thenReturn(savedCartItemEntity);
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(productEntity));
 
         CartItemDto expectDto = CartItemDto.fromCartIdAndProductEntity(cartId, productEntity);
@@ -70,10 +70,10 @@ class CartServiceTest {
         long productId1 = 1L;
         long productId2 = 2L;
         MemberDto memberDto = MemberDto.fromEntity(new MemberEntity(userId, "a@a.com", "1234"));
-        CartEntity cartEntity1 = new CartEntity(1L, userId, productId1);
-        CartEntity cartEntity2 = new CartEntity(2L, userId, productId2);
+        CartItemEntity cartItemEntity1 = new CartItemEntity(1L, userId, productId1);
+        CartItemEntity cartItemEntity2 = new CartItemEntity(2L, userId, productId2);
         when(cartRepository.findByUserId(anyLong()))
-                .thenReturn(List.of(cartEntity1, cartEntity2));
+                .thenReturn(List.of(cartItemEntity1, cartItemEntity2));
 
         ProductEntity productEntity1 = new ProductEntity(productId1, "product1", "url1.com", 10);
         ProductEntity productEntity2 = new ProductEntity(productId2, "product2", "url2.com", 20);
@@ -82,8 +82,8 @@ class CartServiceTest {
         when(productRepository.findById(productId2))
                 .thenReturn(Optional.of(productEntity2));
 
-        CartItemDto cartItemDto1 = CartItemDto.fromCartIdAndProductEntity(cartEntity1.getId(), productEntity1);
-        CartItemDto cartItemDto2 = CartItemDto.fromCartIdAndProductEntity(cartEntity2.getId(), productEntity2);
+        CartItemDto cartItemDto1 = CartItemDto.fromCartIdAndProductEntity(cartItemEntity1.getId(), productEntity1);
+        CartItemDto cartItemDto2 = CartItemDto.fromCartIdAndProductEntity(cartItemEntity2.getId(), productEntity2);
 
         assertThat(cartService.findAllUserItems(memberDto))
                 .isEqualTo(List.of(cartItemDto1, cartItemDto2));
