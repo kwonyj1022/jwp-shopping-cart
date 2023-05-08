@@ -47,17 +47,7 @@ public class DBMemberRepository implements MemberRepository {
     public Optional<MemberEntity> findByEmail(String email) throws DuplicateEmailException {
         String sql = "SELECT id, email, password FROM member WHERE email = ?";
         List<MemberEntity> entities = jdbcTemplate.query(sql, memberEntityMaker(), email);
-        if (entities.size() > 1) {
-            throw new DuplicateEmailException("동일한 이메일이 2개 이상 존재합니다.");
-        }
         return entities.stream().findAny();
-    }
-
-    private RowMapper<MemberEntity> memberEntityMaker() {
-        return (rs, rowNum) -> new MemberEntity(
-                rs.getLong("id"),
-                rs.getString("email"),
-                rs.getString("password"));
     }
 
     @Override
@@ -79,5 +69,12 @@ public class DBMemberRepository implements MemberRepository {
     public void deleteById(Long id) {
         String sql = "DELETE FROM member WHERE id = ?";
         jdbcTemplate.update(sql, id);
+    }
+
+    private RowMapper<MemberEntity> memberEntityMaker() {
+        return (rs, rowNum) -> new MemberEntity(
+                rs.getLong("id"),
+                rs.getString("email"),
+                rs.getString("password"));
     }
 }

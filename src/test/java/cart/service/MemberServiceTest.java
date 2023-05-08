@@ -3,8 +3,6 @@ package cart.service;
 import cart.dto.member.MemberDto;
 import cart.dto.member.MemberRequestDto;
 import cart.entity.MemberEntity;
-import cart.exception.DuplicateEmailException;
-import cart.exception.InvalidMemberException;
 import cart.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +30,7 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원을 추가한다.")
-    void joinTest_success() {
+    void joinTest() {
         String email = "c@c.com";
         String password = "password3";
         MemberRequestDto request = new MemberRequestDto(email, password);
@@ -41,18 +39,6 @@ class MemberServiceTest {
 
         MemberDto expectDto = MemberDto.fromEntity(entity);
         assertThat(memberService.join(request)).isEqualTo(expectDto);
-    }
-
-    @Test
-    @DisplayName("회원을 추가할 때 동일한 email이 이미 존재하면 예외가 발생한다.")
-    void joinTest_fail() {
-        MemberRequestDto request = new MemberRequestDto("c@c.com", "password");
-        when(memberRepository.findByEmail(any(String.class)))
-                .thenThrow(new DuplicateEmailException("동일한 이메일이 2개 이상 존재합니다."));
-
-        assertThatThrownBy(() -> memberService.join(request))
-                .isInstanceOf(InvalidMemberException.class)
-                .hasMessage("동일한 이메일이 2개 이상 존재합니다.");
     }
 
     @Test

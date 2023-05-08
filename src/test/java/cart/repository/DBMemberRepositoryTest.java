@@ -1,12 +1,12 @@
 package cart.repository;
 
 import cart.entity.MemberEntity;
-import cart.exception.DuplicateEmailException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -38,12 +38,21 @@ class DBMemberRepositoryTest {
 
     @Test
     @DisplayName("회원 정보를 DB에 저장한다.")
-    void saveTest() {
+    void saveTest_success() {
         MemberEntity memberEntity3 = new MemberEntity(null, "c@c.com", "password3");
 
         memberRepository.save(memberEntity3);
         List<MemberEntity> memberEntities = memberRepository.findAll();
         assertThat(memberEntities).hasSize(3);
+    }
+
+    @Test
+    @DisplayName("회원 정보를 DB에 저장할 때 동일한 이메일이 존재하면 예외가 발생한다.")
+    void saveTest_fail() {
+        MemberEntity duplicateEmailMemberEntity = new MemberEntity(null, entity1.getEmail(), "1234");
+        assertThatThrownBy(() -> memberRepository.save(duplicateEmailMemberEntity))
+                .isInstanceOf(DataIntegrityViolationException.class);
+
     }
 
     @Test
@@ -68,18 +77,6 @@ class DBMemberRepositoryTest {
         MemberEntity foundEntity = nullableEntity.get();
 
         assertThat(foundEntity).isEqualTo(entity1);
-    }
-
-    @Test
-    @DisplayName("email로 회원 정보를 조회할 때, 조회된 회원이 2명 이상이면 예외를 발생시킨다.")
-    void findByEmailTest_fail() {
-        String duplicatedEmail = entity1.getEmail();
-        MemberEntity emailDuplicatedEntity = new MemberEntity(null, duplicatedEmail, "password3");
-        memberRepository.save(emailDuplicatedEntity);
-
-        assertThatThrownBy(() -> memberRepository.findByEmail(duplicatedEmail))
-                .isInstanceOf(DuplicateEmailException.class)
-                .hasMessage("동일한 이메일이 2개 이상 존재합니다.");
     }
 
     @Test
