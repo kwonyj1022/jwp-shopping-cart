@@ -20,6 +20,10 @@ public class CartItemResponseDto {
         this.price = price;
     }
 
+    public static CartItemResponseDto of(Long cartId, Long productId, String name, String imgUrl, int price) {
+        return new CartItemResponseDto(cartId, productId, name, imgUrl, price);
+    }
+
     public static CartItemResponseDto fromDto(CartItemDto cartItemDto) {
         ProductDto productDto = cartItemDto.getProductDto();
         return new CartItemResponseDto(cartItemDto.getId(), productDto.getId(), productDto.getName(), productDto.getImgUrl(), productDto.getPrice());

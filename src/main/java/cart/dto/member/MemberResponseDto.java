@@ -14,6 +14,10 @@ public class MemberResponseDto {
         this.password = password;
     }
 
+    public static MemberResponseDto of(Long id, String email, String password) {
+        return new MemberResponseDto(id, email, password);
+    }
+
     public static MemberResponseDto fromDto(MemberDto dto) {
         return new MemberResponseDto(dto.getId(), dto.getEmail(), dto.getPassword());
     }
